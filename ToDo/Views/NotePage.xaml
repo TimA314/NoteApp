@@ -6,6 +6,7 @@
     <VerticalStackLayout Spacing="10" Margin="5">
         <Editor x:Name="TextEditor"
                 Placeholder="Type something here."
+                Text="{Binding Text}"
                 HeightRequest="100" />
 
         <Grid ColumnDefinitions="*,*" ColumnSpacing="4">

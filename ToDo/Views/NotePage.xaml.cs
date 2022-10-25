@@ -1,30 +1,51 @@
+
+
 namespace ToDo.Views;
 
+[QueryProperty(nameof(ItemId), nameof(ItemId))]
 public partial class NotePage : ContentPage
 {
-    string _fileName = Path.Combine(FileSystem.AppDataDirectory, "notes.txt");
-
+	public string ItemId { set { LoadNote(value); } }
 	public NotePage()
 	{
         InitializeComponent();
-
-		if (File.Exists(_fileName))
-		{
-			TextEditor.Text = File.ReadAllText(_fileName);
-		}
+		string appDataPath = FileSystem.AppDataDirectory;
+        string randomFileName = $"{Path.GetRandomFileName()}.notes.txt";
+		LoadNote(Path.Combine(appDataPath, randomFileName));
 	}
 
-	private void SaveButton_Clicked(object sender, EventArgs e)
+	private void LoadNote(string fileName)
 	{
-		File.WriteAllText(_fileName, TextEditor.Text);
+		Models.Note noteModel = new Models.Note();
+		noteModel.FileName = fileName;
+
+		if (File.Exists(fileName))
+		{
+			noteModel.Date = File.GetCreationTime(fileName);
+			noteModel.Text = File.ReadAllText(fileName);
+		}
+
+		BindingContext = noteModel;
 	}
 
-	private void DeleteButtonClicked(object sender, EventArgs e)
+	private async void SaveButton_Clicked(object sender, EventArgs e)
 	{
-		if (File.Exists(_fileName))
+		if (BindingContext is Models.Note note)
 		{
-			File.Delete(_fileName);
+			File.WriteAllText(note.FileName, TextEditor.Text);
 		}
-		TextEditor.Text = String.Empty;
+		await Shell.Current.GoToAsync("..");
+	}
+
+	private async void DeleteButtonClicked(object sender, EventArgs e)
+	{
+		if (BindingContext is Models.Note note)
+		{
+			if (File.Exists(note.FileName))
+			{
+				File.Delete(note.FileName);
+			}
+		}
+		await Shell.Current.GoToAsync("..");
 	}
 }

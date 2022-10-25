@@ -7,15 +7,15 @@
     Shell.FlyoutBehavior="Disabled">
 
     <TabBar>
-        <ShellContent
-            Title="Note"
-            ContentTemplate="{DataTemplate views:NotePage}"
-            Icon="icon_notes" />
 
         <ShellContent
             Title="About"
             ContentTemplate="{DataTemplate views:AboutPage}"
             Icon="icon_about" />
+        <ShellContent
+            Title="AllNotes"
+            ContentTemplate="{DataTemplate views:AllNotes}"
+            Icon="icon_notes" />
 
     </TabBar>
 
