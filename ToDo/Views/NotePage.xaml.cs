@@ -33,6 +33,7 @@ public partial class NotePage : ContentPage
 		if (BindingContext is Models.Note note)
 		{
 			File.WriteAllText(note.FileName, TextEditor.Text);
+			await DisplayAlert("Saved", "Note Saved!", "Ok");
 		}
 		await Shell.Current.GoToAsync("..");
 	}
@@ -44,7 +45,7 @@ public partial class NotePage : ContentPage
 			if (File.Exists(note.FileName))
 			{
 				File.Delete(note.FileName);
-			}
+            }
 		}
 		await Shell.Current.GoToAsync("..");
 	}
